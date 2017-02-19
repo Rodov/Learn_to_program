@@ -1,0 +1,23 @@
+﻿<meta charset="utf-8">
+<script>
+	var hi; //верхняя граница мишени
+	var low; //нижняя граница мишени
+	var shoot; //выстрел игрока
+	//определяем границы мишени
+	var a=Math.round(Math.random()*100);
+	var b=Math.round(Math.random()*100);
+	if (a<b) {low=a;hi=b} else {low=b;hi=a}
+	//собственно игра
+	while (!isNaN(shoot=parseInt(prompt("Под каким углом стреляем? (диапазон 0-100, пусто - конец игры)"))))
+	{
+		if (shoot>=low&&shoot<=hi) { 
+			alert("Попадание!");
+			break
+		} else if (shoot>hi) {
+			alert("Перелет!")
+		} else {
+			alert("Недолет!")
+		}
+	}
+	alert("конец игры");
+</script>
