@@ -1,0 +1,87 @@
+﻿<meta charset="utf-8">
+<script>
+
+	//возвращает случайное число между min и max
+	function getRandomInt(min,max){
+		return Math.floor(Math.random()*(max-min+1))+min
+	}
+
+	//Возвращает случайную карту
+	function getCard(){	
+		var cards=["6","7","8","9","10","J","Q","K","A"];
+		return cards[getRandomInt(0,cards.length-1)]
+	}
+
+	//Возвращает статус игроков
+	function getStatus(){
+		return "Дилер: "+dealer.join(", ")+" ("+getSum(dealer)+"); Игрок: "+player.join(", ")+" ("+getSum(player)+")"
+	}
+
+	//Возвращает сумму очков на руке
+	function getSum(arr){
+		var Sum=0;
+		//подсчет карт, кроме тузов
+		for (var i=0;i<arr.length;i++){
+			if (arr[i]!="A") {
+				if (arr[i]=="J"||arr[i]=="Q"||arr[i]=="K") {
+					Sum=Sum+10;
+				} else {
+					Sum=Sum+parseInt(arr[i]);
+				}
+			}
+		}
+		//подсчет тузов
+		for (var i=0;i<arr.length;i++){
+			if (arr[i]=="A") {
+				if (Sum>10) {
+					Sum=Sum+1;
+				} else {
+					Sum=Sum+11;
+				}
+			}
+		}
+		return Sum 
+	}
+
+	//Первоначальная сдача
+	var dealer=[getCard()];
+	var player=[getCard(),getCard()];
+	var SumP=getSum(player);
+	var SumD=getSum(dealer);
+
+	if (SumP==21){
+		alert("Дьявольское везение - Очко на раздаче!");
+	} else {
+		var answer="";
+		do {
+			answer=prompt(getStatus()+" Еще карту? 1 - Да, остальное - Нет :");
+			if (answer=="1") {
+				player.push(getCard());
+				SumP=getSum(player);
+				if (SumP==21) {
+					alert("Вы выиграли! "+ getStatus());
+					break;
+				} else if (SumP>21) {
+					alert("Вы проиграли! У Вас перебор: "+ getStatus());
+					break;
+				}
+			} else {
+				while (SumD<17) {
+					dealer.push(getCard());
+					SumD=getSum(dealer);
+				}
+					if (SumD==21) {
+						alert("Вы проиграли! У дилера Очко! "+ getStatus());
+					} else if (SumD>21) {
+						alert("Вы выиграли! У дилера перебор: "+ getStatus());
+					} else if (SumD==SumP) {
+						alert("Ничья: "+ getStatus());
+					} else if (SumD>SumP) {
+						alert("Вы проиграли!: "+ getStatus());
+					} else {
+						alert("Вы выиграли! "+ getStatus());
+					}
+			}
+		} while (answer=="1")
+	}
+</script>
